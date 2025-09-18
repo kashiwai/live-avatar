@@ -1,0 +1,11 @@
+pycache/
+.venv/
+.env
+out/
+external/
+*.mp4
+*.wav
+*.pth
+*.bin
+*.tgz
+.cache/

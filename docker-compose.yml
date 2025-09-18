@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  live-avatar:
+    build: .
+    image: live-avatar:musetalk15
+    working_dir: /app
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - FISH_API_KEY=${FISH_API_KEY}
+      - FISH_AUDIO_API_KEY=${FISH_AUDIO_API_KEY}
+      - FISH_AUDIO_VOICE_ID=${FISH_AUDIO_VOICE_ID}
+      - FISH_AUDIO_BASE_HTTP_URL=${FISH_AUDIO_BASE_HTTP_URL}
+      - FISH_AUDIO_BASE_URL=${FISH_AUDIO_BASE_URL}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o}
+      - OPENAI_TEMPERATURE=${OPENAI_TEMPERATURE:-0.6}
+      - MUSE_TALK_REPO=external/MuseTalk
+      - MUSE_TALK_INFER_SCRIPT=scripts/inference.py
+      - MUSE_TALK_SR=16000
+      - MUSE_TALK_CHANNELS=1
+    volumes:
+      - ./:/app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    # Modern Compose supports this shorthand
+    gpus: all
+    command: ["python", "-m", "src.live_avatar.main", "--help"]
+
